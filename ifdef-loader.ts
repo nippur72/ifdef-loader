@@ -14,6 +14,7 @@ export = function(source: string, map) {
    {
       const errorMessage = `ifdef-loader error: ${err}`;
       this.callback(errorMessage, source, map);
+      return;
    }
 
    this.callback(null, source, map);
