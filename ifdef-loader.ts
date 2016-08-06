@@ -6,10 +6,15 @@ export = function(source: string, map) {
    this.cacheable && this.cacheable();
    const query = queryString.parse(url.parse(this.query).query);
 
-   source = parse(source, query);
-
-   //var msg = query.msg || "echo: ";
-   //console.log(msg + ": "+ path.basename(this.resourcePath));
+   try
+   {
+      source = parse(source, query);
+   }
+   catch(err)
+   {
+      const errorMessage = `ifdef-loader error: ${err}`;
+      this.callback(errorMessage, source, map);
+   }
 
    this.callback(null, source, map);
 };
