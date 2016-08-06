@@ -1,8 +1,8 @@
 {
   "name": "ifdef-loader",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "#ifdef conditional Webpack loader",
-  "main": "if-defloader.js",
+  "main": "ifdef-loader.js",
   "dependencies": {},
   "devDependencies": {
     "@types/node": "^6.0.31"
