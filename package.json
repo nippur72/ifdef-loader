@@ -1,0 +1,23 @@
+{
+  "name": "ifdef-loader",
+  "version": "0.0.1",
+  "description": "#ifdef conditional Webpack loader",
+  "main": "if-defloader.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^6.0.31"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Antonino Porcino <nino.porcino@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nippur72/ifdef-loader.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nippur72/ifdef-loader/issues"
+  },
+  "homepage": "https://github.com/nippur72/ifdef-loader#readme"
+}

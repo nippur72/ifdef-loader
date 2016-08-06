@@ -1,0 +1,22 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "target": "es5",
+        "forceConsistentCasingInFileNames": false,
+        "noFallthroughCasesInSwitch": true,
+        "module": "commonjs",
+        "noImplicitAny": false,
+        "noImplicitReturns": true,
+        "strictNullChecks": true,
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "experimentalDecorators": true,
+        "declaration": false,
+        "types": [
+           "node"
+        ]
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}
