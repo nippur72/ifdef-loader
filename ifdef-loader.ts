@@ -2,7 +2,7 @@ import path = require('path');
 import url = require('url');
 import queryString = require('querystring');
 
-export = function(source, map) {
+export = function(source: string, map) {
    this.cacheable && this.cacheable();
    const query = queryString.parse(url.parse(this.query).query);
 
