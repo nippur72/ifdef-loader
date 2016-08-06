@@ -9,15 +9,14 @@ export = function(source: string, map) {
    try
    {
       source = parse(source, query);
+      this.callback(null, source, map);
    }
    catch(err)
    {
       const errorMessage = `ifdef-loader error: ${err}`;
-      this.callback(errorMessage, source, map);
-      return;
+      console.log(errorMessage);
+      this.callback(errorMessage);
    }
-
-   this.callback(null, source, map);
 };
 
 function parse(source, defs): string {
