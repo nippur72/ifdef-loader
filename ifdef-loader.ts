@@ -23,14 +23,14 @@ function parse(source, defs): string {
 
       const end = find_end(lines, startInfo.line, startInfo.indent);
       if(end === undefined) {
-         throw `#if without #endif in line ${startInfo.line}`;
+         throw `#if without #endif in line ${startInfo.line+1}`;
       }
 
       const blank = evaluate(startInfo.condition, startInfo.keyword, defs);
 
       if(blank) {
          blank_code(lines, startInfo.line, end.line);
-         console.log(`matched condition #${startInfo.keyword} ${startInfo.condition} => excluded lines [${startInfo.line}-${end.line}]`);
+         console.log(`matched condition #${startInfo.keyword} ${startInfo.condition} => excluded lines [${startInfo.line+1}-${end.line+1}]`);
       }
       else {
          console.log(`unmatched condition #${startInfo.keyword} ${startInfo.condition}`);
