@@ -62,7 +62,7 @@ interface IEnd {
 }
 
 function find_start_if(lines: string[], n: number): IStart|undefined {
-   const re = /^\/\/([\s]*)#(if)([\s\S]*)$/g;
+   const re = /^\/\/([\s]*)#(if)([\s\S]+)$/g;
    for(let t=n; t<lines.length; t++) {
       const match = re.exec(lines[t]);
       if(match) {
