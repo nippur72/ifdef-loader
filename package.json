@@ -5,10 +5,13 @@
   "main": "ifdef-loader.js",
   "dependencies": {},
   "devDependencies": {
-    "@types/node": "^6.0.31"
+    "@types/jasmine": "^2.2.31",
+    "@types/node": "^6.0.31",
+    "jasmine": "^2.4.1",
+    "typescript": "^2.1.0-dev.20160807"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tsc & jasmine --no-color"
   },
   "author": "Antonino Porcino <nino.porcino@gmail.com>",
   "license": "MIT",
