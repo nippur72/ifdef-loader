@@ -8,9 +8,11 @@ export = function(source: string, map) {
    this.cacheable && this.cacheable();
    const query = queryString.parse(url.parse(this.query).query);
 
+   const verbose = query["ifdef-verbose"];
+
    try
    {
-      source = parse(source, query);
+      source = parse(source, query, verbose);
       this.callback(null, source, map);
    }
    catch(err)

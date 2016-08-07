@@ -1,13 +1,7 @@
 interface IStart {
    line: number;
-   indent: number;
    keyword: string;
    condition: string;
-}
-
-interface IEnd {
-   line: number;
-   keyword: string;
 }
 
 export function parse(source, defs, verbose?: boolean): string {
@@ -17,17 +11,17 @@ export function parse(source, defs, verbose?: boolean): string {
       let startInfo = find_start_if(lines,n);
       if(startInfo === undefined) break;
 
-      const end = find_end(lines, startInfo.line, startInfo.indent);
-      if(end === undefined) {
+      const endLine = find_end(lines, startInfo.line);
+      if(endLine === -1) {
          throw `#if without #endif in line ${startInfo.line+1}`;
       }
 
       const cond = evaluate(startInfo.condition, startInfo.keyword, defs);
 
       if(!cond) {
-         blank_code(lines, startInfo.line, end.line);
+         blank_code(lines, startInfo.line, endLine);
          if(verbose) {
-            console.log(`matched condition #${startInfo.keyword} ${startInfo.condition} => excluded lines [${startInfo.line+1}-${end.line+1}]`);
+            console.log(`matched condition #${startInfo.keyword} ${startInfo.condition} => excluded lines [${startInfo.line+1}-${endLine+1}]`);
          }
       }
       else {
@@ -35,7 +29,7 @@ export function parse(source, defs, verbose?: boolean): string {
             console.log(`unmatched condition #${startInfo.keyword} ${startInfo.condition}`);
          }
          blank_code(lines, startInfo.line, startInfo.line);
-         blank_code(lines, end.line, end.line);
+         blank_code(lines, endLine, endLine);
       }
 
       n = startInfo.line;
@@ -44,40 +38,56 @@ export function parse(source, defs, verbose?: boolean): string {
    return lines.join('\n');
 }
 
-function find_start_if(lines: string[], n: number): IStart|undefined {
+function match_if(line: string): IStart|undefined {
    const re = /^\/\/([\s]*)#(if)([\s\S]+)$/g;
+   const match = re.exec(line);
+   if(match) {
+      return {
+         line: -1,
+         keyword: match[2],
+         condition: match[3].trim()
+      };
+   }
+   return undefined;
+}
+
+function match_endif(line: string): boolean {
+   const re = /^\/\/([\s]*)#(endif)[\s]*$/g;
+   const match = re.exec(line);
+   if(match) return true;
+   return false
+}
+
+function find_start_if(lines: string[], n: number): IStart|undefined {
    for(let t=n; t<lines.length; t++) {
-      const match = re.exec(lines[t]);
-      if(match) {
-         //console.log(`match start at line ${t}`);
-         return {
-            line: t,
-            indent: match[1].length,
-            keyword: match[2],
-            condition: match[3].trim()
-         };
+      const match = match_if(lines[t]);
+      if(match !== undefined) {
+         match.line = t;
+         return match;
+         // TODO: when es7 write as: return { line: t, ...match };
       }
    }
    return undefined;
 }
 
-function find_end(lines: string[], start: number, wantedIndent: number): IEnd | undefined {
-   const re = /^\/\/([\s]*)#(endif)[\s]*$/g;
+function find_end(lines: string[], start: number): number {
+   let level = 1;
    for(let t=start+1; t<lines.length; t++) {
-      re.lastIndex = 0;
-      let match = re.exec(lines[t]);
-      if(match) {
-         let indent = match[1].length;
-         if(indent === wantedIndent) {
-            //console.log(`match end at line ${t}`);
-            return {
-               line: t,
-               keyword: match[2]
-            };
+      const mif  = match_if(lines[t]);
+      const mend = match_endif(lines[t]);
+
+      if(mif) {
+         level++;
+      }
+
+      if(mend) {
+         level--;
+         if(level === 0) {
+            return t;
          }
       }
    }
-   return undefined;
+   return -1;
 }
 
 /**
