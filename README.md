@@ -6,8 +6,6 @@ directly from Webpack.
 Conditional compilation directives are written inside `//` doubleslash comment so
 that they don't effect normal JavaScript or TypeScript parsing.
 
-The `//` doubleslash comment must be at the start of line.
-
 Example:
 ```js
 // #if DEBUG
@@ -29,12 +27,12 @@ otherwise is excluded by commenting it out.
 The `#if` clauses can also be nested:
 ```js
 // #if PRODUCTION
-//    #if OS=="android"
-         android_code();
-//    #endif
-//    #if OS=="ios"
-         ios_code();
-//    #endif
+      // #if OS=="android"
+      android_code();
+      // #endif
+      // #if OS=="ios"
+      ios_code();
+      // #endif
 // #endif
 ```
 

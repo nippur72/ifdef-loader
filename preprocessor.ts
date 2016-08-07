@@ -39,7 +39,7 @@ export function parse(source, defs, verbose?: boolean): string {
 }
 
 function match_if(line: string): IStart|undefined {
-   const re = /^\/\/([\s]*)#(if)([\s\S]+)$/g;
+   const re = /^[\s]*\/\/([\s]*)#(if)([\s\S]+)$/g;
    const match = re.exec(line);
    if(match) {
       return {
@@ -52,7 +52,7 @@ function match_if(line: string): IStart|undefined {
 }
 
 function match_endif(line: string): boolean {
-   const re = /^\/\/([\s]*)#(endif)[\s]*$/g;
+   const re = /^[\s]*\/\/([\s]*)#(endif)[\s]*$/g;
    const match = re.exec(line);
    if(match) return true;
    return false
