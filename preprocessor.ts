@@ -18,18 +18,18 @@ export function parse(source, defs, verbose?: boolean): string {
 
       const cond = evaluate(startInfo.condition, startInfo.keyword, defs);
 
-      if(!cond) {
-         blank_code(lines, startInfo.line, endLine);
+      if(cond) {
          if(verbose) {
-            console.log(`matched condition #${startInfo.keyword} ${startInfo.condition} => excluded lines [${startInfo.line+1}-${endLine+1}]`);
-         }
-      }
-      else {
-         if(verbose) {
-            console.log(`unmatched condition #${startInfo.keyword} ${startInfo.condition}`);
+            console.log(`matched condition #${startInfo.keyword} ${startInfo.condition} => including lines [${startInfo.line+1}-${endLine+1}]`);
          }
          blank_code(lines, startInfo.line, startInfo.line);
          blank_code(lines, endLine, endLine);
+      }
+      else {
+         blank_code(lines, startInfo.line, endLine);
+         if(verbose) {
+            console.log(`not matched condition #${startInfo.keyword} ${startInfo.condition} => excluding lines [${startInfo.line+1}-${endLine+1}]`);
+         }
       }
 
       n = startInfo.line;
@@ -95,12 +95,11 @@ function find_end(lines: string[], start: number): number {
  */
 function evaluate(condition: string, keyword: string, defs: any): boolean {
 
-   let code = "";
+   let code = "(function(){";
    for(let key in defs) {
       code += `var ${key} = ${JSON.stringify(defs[key])};`;
    }
-   code += `(${condition}) ? true : false`;
-   //console.log(code);
+   code += `return (${condition}) ? true : false;})()`;
 
    let result: boolean;
    try {
