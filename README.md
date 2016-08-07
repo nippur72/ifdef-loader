@@ -1,7 +1,7 @@
 # ifdef-loader
 
 Webpack loader that allows JavaScript or TypeScript conditional compilation (`#if ... #endif`)
-directly from WebPack.
+directly from Webpack.
 
 Conditional compilation directives are written inside `//` doubleslash comment so
 that they don't effect normal JavaScript or TypeScript parsing.
@@ -51,7 +51,7 @@ npm install ifdef-loader --save-dev
 
 Example of use with TypeScript files, enabling the `DEBUG` and `version` variables:
 
-In `webpack.config.json`:
+In `webpack.config.json` chain it before `ts-loader`:
 ```js
 //...
 { test: /\.tsx?$/, exclude: /node_modules/, loaders: [ "ts-loader", 'ifdef-loader?DEBUG=true&version=3' ] }
@@ -67,7 +67,7 @@ in `example.ts`:
 // #endif
 ```
 
-Add `ifdef-verbose` to query string if you want the loader to print informations when directives are processed:
+Add `ifdef-verbose` to query string if you want the loader to print when directives are processed:
 ```js
 //...
 { test: /\.tsx?$/, exclude: /node_modules/, loaders: [ "ts-loader", 'ifdef-loader?ifdef-verbose=true' ] }
