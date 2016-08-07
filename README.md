@@ -1,6 +1,44 @@
 # ifdef-loader
 
-Webpack package loader that allows JavaScript/TypeScript conditional compilation (`#if ... #endif`).
+Webpack loader that allows JavaScript or TypeScript conditional compilation (`#if ... #endif`)
+directly from WebPack.
+
+Conditional compilation directives are written inside `//` doubleslash comment so
+that they don't effect normal JavaScript or TypeScript parsing.
+
+The `//` doubleslash comment must be at the start of line.
+
+Example:
+```js
+// #if DEBUG
+console.log("there's a bug!");
+// #endif
+```
+The `DEBUG` or any other variable can be specified when configuring the Webpack loader (see below).
+
+The directive `#if` accepts any valid JavaScript expression:
+```js
+// #if PRODUCTION && version.charAt(0)=='X'
+console.log("Ho!");
+// #endif
+```
+
+If the expression is `true` the block of code between `#if` and `#endif` is included,
+otherwise is excluded by commenting it out.
+
+The `#if` clauses can also be nested:
+```js
+// #if PRODUCTION
+//    #if OS=="android"
+         android_code();
+//    #endif
+//    #if OS=="ios"
+         ios_code();
+//    #endif
+// #endif
+```
+
+Please note that `#else` is not supported at the moment.
 
 ## Installation
 
@@ -22,9 +60,9 @@ In `webpack.config.json`:
 in `example.ts`:
 ```ts
 // #if DEBUG
-/* code to be included if DEBUG is defined */
+     /* code to be included if DEBUG is defined */
 //   #if version <2
-/* code to be included if DEBUG is defined and version < 2*/
+        /* code to be included if DEBUG is defined and version < 2*/
 //   #endif
 // #endif
 ```
@@ -36,27 +74,11 @@ Add `ifdef-verbose` to query string if you want the loader to print informations
 //...
 ```
 
-## Directives
-
-Directives must be placed after a `//` doubleslash comment.
-
-```js
-// #if SOMECOND
-//   #if SOMEOTHER
-/* code */
-//   #endif
-// #endif
-```
-
-At the moment the only directive supported is `#if`/`#endif` (more to come).
-
-```js
-// #if SOMECOND
-/* code to be included if SOMECOND is true */
-// #endif
-```
-
 ## License
 
 MIT
+
+## Contributions
+
+Contributions in the form of issues or pull requests are welcome.
 
