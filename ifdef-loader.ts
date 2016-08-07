@@ -6,17 +6,19 @@ import { parse } from "./preprocessor";
 
 export = function(source: string, map) {
    this.cacheable && this.cacheable();
+   // ?json=... contains JSON encoded data object
    const query = queryString.parse(url.parse(this.query).query);
+   const data = JSON.parse(query.json);
 
-   const verboseFlag = "ifdef-verbose"
-   const verbose = query[verboseFlag];
+   const verboseFlag = "ifdef-verbose";
+   const verbose = data[verboseFlag];
    if(verbose) {
-      delete query[verboseFlag];
+      delete data[verboseFlag];
    }
 
    try
    {
-      source = parse(source, query, verbose);
+      source = parse(source, data, verbose);
       this.callback(null, source, map);
    }
    catch(err)

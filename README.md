@@ -51,8 +51,18 @@ Example of use with TypeScript files, enabling the `DEBUG` and `version` variabl
 
 In `webpack.config.json` chain it before `ts-loader`:
 ```js
+// define preprocessor variables
+const opts = {
+   DEBUG: true,
+   version: 3,
+   "ifdef-verbose": true  // add this for verbose output
+};
+
+// pass as JSON object into query string ?json=...
+const q = require('querystring').encode({json: JSON.stringify(opts)});
+
 //...
-{ test: /\.tsx?$/, exclude: /node_modules/, loaders: [ "ts-loader", 'ifdef-loader?DEBUG=true&version=3' ] }
+{ test: /\.tsx?$/, exclude: /node_modules/, loaders: [ "ts-loader", `ifdef-loader?${q}` ] }
 //...
 ```
 in `example.ts`:
@@ -63,13 +73,6 @@ in `example.ts`:
         /* code to be included if DEBUG is defined and version < 2*/
 //   #endif
 // #endif
-```
-
-Add `ifdef-verbose` to query string if you want the loader to print when directives are processed:
-```js
-//...
-{ test: /\.tsx?$/, exclude: /node_modules/, loaders: [ "ts-loader", 'ifdef-loader?ifdef-verbose=true' ] }
-//...
 ```
 
 ## License
