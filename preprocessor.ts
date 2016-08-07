@@ -99,7 +99,7 @@ function evaluate(condition: string, keyword: string, defs: any): boolean {
    for(let key in defs) {
       code += `var ${key} = ${JSON.stringify(defs[key])};`;
    }
-   code += `${condition}`;
+   code += `(${condition}) ? true : false`;
    //console.log(code);
 
    let result: boolean;
