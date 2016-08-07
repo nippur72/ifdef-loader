@@ -1,6 +1,6 @@
 {
   "name": "ifdef-loader",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "#ifdef conditional Webpack loader",
   "main": "ifdef-loader.js",
   "dependencies": {},
