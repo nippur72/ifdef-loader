@@ -112,7 +112,7 @@ function evaluate(condition: string, keyword: string, defs: any): boolean {
       //console.log(`evaluation of (${condition}) === ${result}`);
    }
    catch(error) {
-      throw `error evaluation #if condition(${condition}"): ${error}`;
+      throw `error evaluation #if condition(${condition}): ${error}`;
    }
 
    if(keyword === "ifndef") {

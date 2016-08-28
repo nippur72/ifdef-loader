@@ -12,13 +12,13 @@ export = function(source: string, map) {
 
    const verboseFlag = "ifdef-verbose";
    const verbose = data[verboseFlag];
-   if(verbose) {
+   if(verbose !== undefined) {
       delete data[verboseFlag];
    }
 
    const tripleSlashFlag = "ifdef-triple-slash";
    const tripleSlash = data[tripleSlashFlag];
-   if(tripleSlash) {
+   if(tripleSlash !== undefined) {
       delete data[tripleSlashFlag];
    }
 
