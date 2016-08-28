@@ -24,8 +24,7 @@ export = function(source: string, map) {
    catch(err)
    {
       const errorMessage = `ifdef-loader error: ${err}`;
-      console.log(errorMessage);
-      this.callback(errorMessage);
+      this.callback(new Error(errorMessage));
    }
 };
 
