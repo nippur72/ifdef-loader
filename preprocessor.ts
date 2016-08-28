@@ -4,10 +4,11 @@ interface IStart {
    condition: string;
 }
 
-let triple_slash = true;
+let useTripleSlash: boolean|undefined;
 
 export function parse(source, defs, verbose?: boolean, tripleSlash?: boolean): string {
-   triple_slash = tripleSlash || true;
+   if(tripleSlash === undefined) tripleSlash = true;
+   useTripleSlash = tripleSlash;
 
    const lines = source.split('\n');
 
@@ -43,7 +44,7 @@ export function parse(source, defs, verbose?: boolean, tripleSlash?: boolean): s
 }
 
 function match_if(line: string): IStart|undefined {
-   const re = triple_slash ? /^[\s]*\/\/\/([\s]*)#(if)([\s\S]+)$/g : /^[\s]*\/\/([\s]*)#(if)([\s\S]+)$/g;
+   const re = useTripleSlash ? /^[\s]*\/\/\/([\s]*)#(if)([\s\S]+)$/g : /^[\s]*\/\/([\s]*)#(if)([\s\S]+)$/g;
    const match = re.exec(line);
    if(match) {
       return {
@@ -56,7 +57,7 @@ function match_if(line: string): IStart|undefined {
 }
 
 function match_endif(line: string): boolean {
-   const re = triple_slash ? /^[\s]*\/\/\/([\s]*)#(endif)[\s]*$/g : /^[\s]*\/\/([\s]*)#(endif)[\s]*$/g;
+   const re = useTripleSlash ? /^[\s]*\/\/\/([\s]*)#(endif)[\s]*$/g : /^[\s]*\/\/([\s]*)#(endif)[\s]*$/g;
    const match = re.exec(line);
    if(match) return true;
    return false
