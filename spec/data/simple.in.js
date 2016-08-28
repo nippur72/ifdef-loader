@@ -1,13 +1,13 @@
 var a=1;
-// #if DEBUG
+/// #if DEBUG
 debug("hello");
-// #endif
+/// #endif
 var b=2;
-// #if OS === "android"
+/// #if OS === "android"
 androidInit();
-// #endif
+/// #endif
 var c=3;
-// #if version > 4
+/// #if version > 4
 loadVersion4();
-// #endif
+/// #endif
 

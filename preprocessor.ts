@@ -4,7 +4,11 @@ interface IStart {
    condition: string;
 }
 
-export function parse(source, defs, verbose?: boolean): string {
+let triple_slash = true;
+
+export function parse(source, defs, verbose?: boolean, tripleSlash?: boolean): string {
+   triple_slash = tripleSlash || true;
+
    const lines = source.split('\n');
 
    for(let n=0;;) {
@@ -39,7 +43,7 @@ export function parse(source, defs, verbose?: boolean): string {
 }
 
 function match_if(line: string): IStart|undefined {
-   const re = /^[\s]*\/\/([\s]*)#(if)([\s\S]+)$/g;
+   const re = triple_slash ? /^[\s]*\/\/\/([\s]*)#(if)([\s\S]+)$/g : /^[\s]*\/\/([\s]*)#(if)([\s\S]+)$/g;
    const match = re.exec(line);
    if(match) {
       return {
@@ -52,7 +56,7 @@ function match_if(line: string): IStart|undefined {
 }
 
 function match_endif(line: string): boolean {
-   const re = /^[\s]*\/\/([\s]*)#(endif)[\s]*$/g;
+   const re = triple_slash ? /^[\s]*\/\/\/([\s]*)#(endif)[\s]*$/g : /^[\s]*\/\/([\s]*)#(endif)[\s]*$/g;
    const match = re.exec(line);
    if(match) return true;
    return false

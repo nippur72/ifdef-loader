@@ -16,13 +16,17 @@ export = function(source: string, map) {
       delete data[verboseFlag];
    }
 
-   try
-   {
-      source = parse(source, data, verbose);
+   const tripleSlashFlag = "ifdef-triple-slash";
+   const tripleSlash = data[tripleSlashFlag];
+   if(tripleSlash) {
+      delete data[tripleSlashFlag];
+   }
+
+   try {
+      source = parse(source, data, verbose, tripleSlash);
       this.callback(null, source, map);
    }
-   catch(err)
-   {
+   catch(err) {
       const errorMessage = `ifdef-loader error: ${err}`;
       this.callback(new Error(errorMessage));
    }
