@@ -1,14 +1,14 @@
 {
   "name": "ifdef-loader",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "ifdef-loader.js",
   "dependencies": {},
   "devDependencies": {
-    "@types/jasmine": "^2.2.31",
-    "@types/node": "^6.0.31",
-    "jasmine": "^2.4.1",
-    "typescript": "^2.1.0-dev.20160807"
+    "@types/jasmine": "^2.5.38",
+    "@types/node": "^6.0.53",
+    "jasmine": "^2.5.2",
+    "typescript": "^2.1.4"
   },
   "scripts": {
     "test": "tsc & jasmine --no-color"

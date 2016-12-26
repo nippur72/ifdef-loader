@@ -88,3 +88,6 @@ Contributions in the form of issues or pull requests are welcome.
 
 - v1.0.0 changed to triple slash comment syntax. Double slash syntax
 deprecated and available by turning off the `ifdef-triple-slash` option.
+
+- v1.0.3 fixed bug occurring with short lines. Improved handling of line
+termination (CRLF vs LF) in order to preserve source maps.
