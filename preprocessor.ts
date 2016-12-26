@@ -129,8 +129,7 @@ function blank_code(lines: string[], start: number, end: number) {
          lines[t] = ("/" as any).repeat(lines[t].length+1)+'\r';
       }
       else {
-         lines[t] = ("/" as any).repeat(lines[t].length);
+         lines[t] = ("/" as any).repeat(Math.max(lines[t].length, 2));
       }
    }
 }
-
