@@ -124,12 +124,24 @@ function evaluate(condition: string, keyword: string, defs: any): boolean {
 
 function blank_code(lines: string[], start: number, end: number) {
    for(let t=start; t<=end; t++) {
-      const lastChar = lines[t].charAt(lines[t].length-1);
-      if(lastChar === '\r') {
-         lines[t] = ("/" as any).repeat(lines[t].length+1)+'\r';
+      const len = lines[t].length;
+      const lastChar = lines[t].charAt(len-1);
+      const windowsTermination = lastChar === '\r';
+      if(len === 0)
+      {
+         lines[t] = '';
       }
-      else {
-         lines[t] = ("/" as any).repeat(Math.max(lines[t].length, 2));
+      else if(len === 1)
+      {
+         lines[t] = windowsTermination ? '\r' : ' ';
+      }
+      else if(len === 2)
+      {
+         lines[t] = windowsTermination ? ' \r' : '//';
+      }
+      else
+      {
+         lines[t] = windowsTermination ? ("/" as any).repeat(len-1)+'\r' : ("/" as any).repeat(len);
       }
    }
 }
