@@ -3,7 +3,12 @@
   "version": "1.0.4",
   "description": "",
   "main": "ifdef-loader.js",
-  "dependencies": {},
+  "dependencies": {
+    "@types/jasmine": "^2.5.43",
+    "@types/node": "^7.0.5",
+    "jasmine": "^2.5.3",
+    "typescript": "^2.2.1"
+  },
   "devDependencies": {
     "@types/jasmine": "^2.5.38",
     "@types/node": "^6.0.53",
