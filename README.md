@@ -1,6 +1,6 @@
 # ifdef-loader
 
-Webpack loader that allows JavaScript or TypeScript conditional compilation (`#if ... #endif`)
+Webpack loader that allows JavaScript or TypeScript conditional compilation (`#if ... #else ... #endif`)
 directly from Webpack.
 
 Conditional compilation directives are written inside `///` triple slash comment so
@@ -36,7 +36,14 @@ The `#if` clauses can also be nested:
 /// #endif
 ```
 
-Please note that `#else` is not supported at the moment.
+Additionally, `#else` clauses can be defined for every `#if` clause:
+```js
+/// #if PRODUCTION
+console.log('Production!');
+/// #else
+console.log('Something else!');
+/// #endif
+```
 
 ## Installation
 
@@ -91,3 +98,5 @@ deprecated and available by turning off the `ifdef-triple-slash` option.
 
 - v1.0.3 fixed bug occurring with short lines. Improved handling of line
 termination (CRLF vs LF) in order to preserve source maps.
+
+- v1.0.4 added support for #else clauses.
