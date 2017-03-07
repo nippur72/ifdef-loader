@@ -98,3 +98,5 @@ deprecated and available by turning off the `ifdef-triple-slash` option.
 
 - v1.0.3 fixed bug occurring with short lines. Improved handling of line
 termination (CRLF vs LF) in order to preserve source maps.
+
+- v1.0.4 added support for #else clauses.
