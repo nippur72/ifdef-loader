@@ -1,6 +1,6 @@
 {
   "name": "ifdef-loader",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "ifdef-loader.js",
   "dependencies": {},
@@ -14,6 +14,12 @@
     "test": "tsc & jasmine --no-color"
   },
   "author": "Antonino Porcino <nino.porcino@gmail.com>",
+  "contributors": [
+    {
+      "name": "Erez Eshkol",
+      "email": "erez@erez.pw"
+    }
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
