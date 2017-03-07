@@ -21,6 +21,8 @@ export function parse(source, defs, verbose?: boolean, tripleSlash?: boolean): s
          throw `#if without #endif in line ${startInfo.line+1}`;
       }
 
+      const elseLine = find_else(lines, startInfo.line, endLine);
+
       const cond = evaluate(startInfo.condition, startInfo.keyword, defs);
 
       if(cond) {
@@ -28,10 +30,18 @@ export function parse(source, defs, verbose?: boolean, tripleSlash?: boolean): s
             console.log(`matched condition #${startInfo.keyword} ${startInfo.condition} => including lines [${startInfo.line+1}-${endLine+1}]`);
          }
          blank_code(lines, startInfo.line, startInfo.line);
-         blank_code(lines, endLine, endLine);
-      }
-      else {
-         blank_code(lines, startInfo.line, endLine);
+         if (elseLine === -1) {
+            blank_code(lines, endLine, endLine);
+         } else {
+            blank_code(lines, elseLine, endLine);
+         }
+      } else {
+         if (elseLine === -1) {
+            blank_code(lines, startInfo.line, endLine);
+         } else {
+            blank_code(lines, startInfo.line, elseLine);
+            blank_code(lines, endLine, endLine);
+         }
          if(verbose) {
             console.log(`not matched condition #${startInfo.keyword} ${startInfo.condition} => excluding lines [${startInfo.line+1}-${endLine+1}]`);
          }
@@ -59,8 +69,13 @@ function match_if(line: string): IStart|undefined {
 function match_endif(line: string): boolean {
    const re = useTripleSlash ? /^[\s]*\/\/\/([\s]*)#(endif)[\s]*$/g : /^[\s]*\/\/([\s]*)#(endif)[\s]*$/g;
    const match = re.exec(line);
-   if(match) return true;
-   return false
+   return Boolean(match);
+}
+
+function match_else(line: string): boolean {
+   const re = useTripleSlash ? /^[\s]*\/\/\/([\s]*)#(else)[\s]*$/g : /^[\s]*\/\/([\s]*)#(else)[\s]*$/g;
+   const match = re.exec(line);
+   return Boolean(match);
 }
 
 function find_start_if(lines: string[], n: number): IStart|undefined {
@@ -92,6 +107,28 @@ function find_end(lines: string[], start: number): number {
          }
       }
    }
+   return -1;
+}
+
+function find_else(lines: string[], start: number, end: number): number {
+   let level = 1;
+   for(let t=start+1; t<end; t++) {
+      const mif  = match_if(lines[t]);
+      const melse = match_else(lines[t]);
+      const mend = match_endif(lines[t]);
+      if(mif) {
+         level++;
+      }
+
+      if(mend) {
+         level--;
+      }
+
+      if (melse && level === 1) {
+         return t;
+      }
+   }
+
    return -1;
 }
 

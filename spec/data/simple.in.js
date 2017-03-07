@@ -10,4 +10,8 @@ var c=3;
 /// #if version > 4
 loadVersion4();
 /// #endif
-
+/// #if !DEBUG
+debug("hello");
+/// #else
+debug("or not");
+/// #endif
