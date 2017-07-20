@@ -56,7 +56,7 @@ npm install ifdef-loader --save-dev
 
 Example of use with TypeScript files, enabling the `DEBUG` and `version` variables:
 
-In `webpack.config.json` chain it after `ts-loader`:
+In `webpack.config.json` put `ifdef-loader` after `ts-loader` so that files are processed 
 ```js
 // define preprocessor variables
 const opts = {
