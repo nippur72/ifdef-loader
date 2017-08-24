@@ -6,7 +6,7 @@ interface IStart {
 
 let useTripleSlash: boolean|undefined;
 
-export function parse(source, defs, verbose?: boolean, tripleSlash?: boolean): string {
+export function parse(source: string, defs: object, verbose?: boolean, tripleSlash?: boolean): string {
    if(tripleSlash === undefined) tripleSlash = true;
    useTripleSlash = tripleSlash;
 
@@ -135,17 +135,15 @@ function find_else(lines: string[], start: number, end: number): number {
 /**
  * @return true if block has to be preserved
  */
-function evaluate(condition: string, keyword: string, defs: any): boolean {
+function evaluate(condition: string, keyword: string, defs: object): boolean {
 
-   let code = "(function(){";
-   for(let key in defs) {
-      code += `var ${key} = ${JSON.stringify(defs[key])};`;
-   }
-   code += `return (${condition}) ? true : false;})()`;
+   const code = `return (${condition}) ? true : false;`;
+   const args = Object.keys(defs);
 
    let result: boolean;
    try {
-      result = eval(code);
+     const f = new Function(...args, code);
+     result = f(...args.map((k) => defs[k]));
       //console.log(`evaluation of (${condition}) === ${result}`);
    }
    catch(error) {

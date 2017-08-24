@@ -27,5 +27,8 @@
   "bugs": {
     "url": "https://github.com/nippur72/ifdef-loader/issues"
   },
-  "homepage": "https://github.com/nippur72/ifdef-loader#readme"
+  "homepage": "https://github.com/nippur72/ifdef-loader#readme",
+  "dependencies": {
+    "loader-utils": "^1.1.0"
+  }
 }

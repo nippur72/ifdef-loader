@@ -1,14 +1,11 @@
-import path = require('path');
-import url = require('url');
-import queryString = require('querystring');
-
-import { parse } from "./preprocessor";
+import { getOptions } from 'loader-utils';
+import { parse } from './preprocessor';
 
 export = function(source: string, map) {
    this.cacheable && this.cacheable();
    // ?json=... contains JSON encoded data object
-   const query = queryString.parse(url.parse(this.query).query);
-   const data = JSON.parse(query.json);
+   const options = getOptions(this);
+   const data = options.json || options;
 
    const verboseFlag = "ifdef-verbose";
    const verbose = data[verboseFlag];
@@ -31,4 +28,3 @@ export = function(source: string, map) {
       this.callback(new Error(errorMessage));
    }
 };
-
