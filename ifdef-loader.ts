@@ -1,10 +1,10 @@
-import { getOptions } from 'loader-utils';
+import * as loaderUtils from 'loader-utils';
 import { parse } from './preprocessor';
 
 export = function(source: string, map) {
    this.cacheable && this.cacheable();
    // ?json=... contains JSON encoded data object
-   const options = getOptions(this);
+   const options = loaderUtils.getOptions(this);
    const data = options.json || options;
 
    const verboseFlag = "ifdef-verbose";
