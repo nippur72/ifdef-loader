@@ -63,16 +63,27 @@ before going into TypeScript compiler:
 const opts = {
    DEBUG: true,
    version: 3,
-   "ifdef-verbose": true        // add this for verbose output
+   "ifdef-verbose": true,       // add this for verbose output
    "ifdef-triple-slash": false  // add this to use double slash comment instead of default triple slash
 };
 
-// pass as JSON object into query string ?json=...
-const q = require('querystring').encode({json: JSON.stringify(opts)});
+/* ... */ { 
+   test: /\.tsx?$/, 
+   exclude: /node_modules/, 
+   use: [
+      { loader: "ts-loader" }, 
+      { loader: "ifdef-loader", options: opts } 
+   ]
+}
 
-//...
-{ test: /\.tsx?$/, exclude: /node_modules/, loaders: [ "ts-loader", `ifdef-loader?${q}` ] }
-//...
+// alternatively, options can be passed via query string:
+const q = require('querystring').encode(opts});
+/* ... */ { 
+   test: /\.tsx?$/, 
+   exclude: /node_modules/, 
+   loaders: [ "ts-loader", `ifdef-loader?query=${q}` ] 
+}
+
 ```
 in `example.ts`:
 ```ts
@@ -94,6 +105,9 @@ Contributions in the form of issues or pull requests are welcome.
 
 ## Changes
 
+- v2.0.0 BREAKING CHANGE: options are now passed using the 
+standard Webpack API (`loader-utils`). See below for the upgrade.
+
 - v1.0.0 changed to triple slash comment syntax. Double slash syntax
 deprecated and available by turning off the `ifdef-triple-slash` option.
 
@@ -101,3 +115,16 @@ deprecated and available by turning off the `ifdef-triple-slash` option.
 termination (CRLF vs LF) in order to preserve source maps.
 
 - v1.1.0 added support for `#else` clauses.
+
+## Upgrading from v1 to v2
+
+In v2 options are passed differently than v1, so you need to update your `webpack.config.js`. 
+Just do the following simple changes:
+```js
+/* from */ const q = require('querystring').encode({json: JSON.stringify(opts)});
+/* to   */ const q = require('querystring').encode(opts);
+/* from */ ... `ifdef-loader?${q}` ...
+/* to   */ ... `ifdef-loader?query=${q}` ...
+
+/* or pass options directly (see the docs) */
+```

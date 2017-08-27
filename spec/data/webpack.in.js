@@ -1,0 +1,1 @@
+const dummy = require("./webpack.in.module.js")

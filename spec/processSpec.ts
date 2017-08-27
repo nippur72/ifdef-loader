@@ -58,3 +58,23 @@ describe("files spec", ()=> {
 
 });
 
+describe("webpack bundle", ()=>{
+   const files = [ "webpack" ];
+
+   const fileSet = files.map(fn => ({
+      input:    `spec/data/${fn}.in.js`,
+      output:   `spec/data/${fn}.out.js`,
+      actual:   `spec/data/${fn}.out.actual.js`      
+   }));
+
+   // checks spec files as terminating in CRLF (windows)
+   fileSet.forEach( ({ input, output, actual })=> {
+      it(`build correctly on ${input}`, ()=> {
+         const inFile = read(input);
+         const actualFile = read(actual);
+         const expectedFile = read(output);         
+         expect(actualFile).toEqual(expectedFile);
+      });
+   });
+
+});

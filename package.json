@@ -1,16 +1,17 @@
 {
   "name": "ifdef-loader",
-  "version": "1.1.1",
+  "version": "2.0.0",
   "description": "",
   "main": "ifdef-loader.js",
   "devDependencies": {
     "@types/jasmine": "^2.5.43",
     "@types/node": "^7.0.5",
     "jasmine": "^2.5.3",
-    "typescript": "^2.2.1"
+    "typescript": "^2.2.1",
+    "webpack": "^3.5.5"
   },
   "scripts": {
-    "test": "tsc & jasmine --no-color"
+    "test": "node node_modules/webpack/bin/webpack.js & tsc & jasmine --no-color"
   },
   "author": "Antonino Porcino <nino.porcino@gmail.com>",
   "contributors": [
