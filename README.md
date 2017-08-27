@@ -63,7 +63,7 @@ before going into TypeScript compiler:
 const opts = {
    DEBUG: true,
    version: 3,
-   "ifdef-verbose": true        // add this for verbose output
+   "ifdef-verbose": true,       // add this for verbose output
    "ifdef-triple-slash": false  // add this to use double slash comment instead of default triple slash
 };
 
