@@ -3,7 +3,7 @@ import { parse } from './preprocessor';
 
 export = function(source: string, map) {
    this.cacheable && this.cacheable();
-   // ?json=... contains JSON encoded data object
+
    const options = loaderUtils.getOptions(this);
    const data = options.json || options;
 
