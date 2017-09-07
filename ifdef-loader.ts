@@ -22,8 +22,7 @@ export = function(source: string, map) {
    try {
       source = parse(source, data, verbose, tripleSlash);
       this.callback(null, source, map);
-   }
-   catch(err) {
+   } catch(err) {
       const errorMessage = `ifdef-loader error: ${err}`;
       this.callback(new Error(errorMessage));
    }
