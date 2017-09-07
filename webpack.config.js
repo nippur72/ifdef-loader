@@ -24,14 +24,14 @@ module.exports = function(env)
    const entry = "./spec/data/webpack.in.js";
 
    const loaders = [{ 
-      test: /\.in\.js$/, 
+      test: /\.in(\.module)?\.js$/, 
       exclude: /node_modules/, 
       use: [{ 
          loader: `${__dirname}/ifdef-loader`,
          options: opts 
       }]
       // alternate: 
-      // loader: `${__dirname}/ifdef-loader?query=${q}`,
+      // loader: `${__dirname}/ifdef-loader?${q}`,
    }];
       
    let config =
