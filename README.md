@@ -81,7 +81,7 @@ const q = require('querystring').encode(opts});
 /* ... */ { 
    test: /\.tsx?$/, 
    exclude: /node_modules/, 
-   loaders: [ "ts-loader", `ifdef-loader?query=${q}` ] 
+   loaders: [ "ts-loader", `ifdef-loader?${q}` ] 
 }
 
 ```
@@ -123,8 +123,6 @@ Just do the following simple changes:
 ```js
 /* from */ const q = require('querystring').encode({json: JSON.stringify(opts)});
 /* to   */ const q = require('querystring').encode(opts);
-/* from */ ... `ifdef-loader?${q}` ...
-/* to   */ ... `ifdef-loader?query=${q}` ...
-
-/* or pass options directly (see the docs) */
+/* you can keep the  ... `ifdef-loader?${q}` ... syntax    */
+/* but it's better to pass options directly (see the docs) */
 ```
