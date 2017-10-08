@@ -5,7 +5,9 @@ export = function(source: string, map) {
    this.cacheable && this.cacheable();
 
    const options = loaderUtils.getOptions(this);
-   const data = options.json || options;
+   const originalData = options.json || options;
+
+   const data = { ...originalData };
 
    const verboseFlag = "ifdef-verbose";
    const verbose = data[verboseFlag];
