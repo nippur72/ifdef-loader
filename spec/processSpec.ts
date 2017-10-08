@@ -25,7 +25,7 @@ const defs = {
 
 describe("files spec", ()=> {
 
-   const files = [ "simple", "nested", "dfleury", "nested.else" ];
+   const files = [ "simple", "nested", "dfleury", "nested.else", "simple.doubleslash" ];
 
    const fileSet = files.map(fn => ({
       input:    `spec/data/${fn}.in.js`,
@@ -37,8 +37,9 @@ describe("files spec", ()=> {
    // checks spec files as terminating in CRLF (windows)
    fileSet.forEach( ({ input, output, actual })=> {
       it(`works on ${input}`, ()=> {
-         const inFile = read(input);
-         const actualFile = parse(inFile, defs);
+         const tripleSlash = input.indexOf(".doubleslash.")==-1; 
+         const inFile = read(input);         
+         const actualFile = parse(inFile, defs, false, tripleSlash);
          const expectedFile = read(output);
          write(actual, actualFile);
          expect(actualFile).toEqual(expectedFile);
@@ -48,8 +49,9 @@ describe("files spec", ()=> {
    // checks spec files as terminating in LF only (unix)
    fileSet.forEach( ({ input, output, actualLF })=> {
       it(`works on ${input}`, ()=> {
+         const tripleSlash = input.indexOf(".doubleslash.")==-1; 
          const inFile = removeCR(read(input));
-         const actualFile = parse(inFile, defs);
+         const actualFile = parse(inFile, defs, false, tripleSlash);
          const expectedFile = removeCR(read(output));
          write(actualLF, actualFile);
          expect(actualFile).toEqual(expectedFile);
