@@ -77,7 +77,7 @@ const opts = {
 }
 
 // alternatively, options can be passed via query string:
-const q = require('querystring').encode(opts});
+const q = require('querystring').encode(opts);
 /* ... */ { 
    test: /\.tsx?$/, 
    exclude: /node_modules/, 
