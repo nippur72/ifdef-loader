@@ -105,6 +105,8 @@ Contributions in the form of issues or pull requests are welcome.
 
 ## Changes
 
+- v2.1.0 added support for `#elif` clause.
+
 - v2.0.0 BREAKING CHANGE: options are now passed using the 
 standard Webpack API (`loader-utils`). See below for the upgrade.
 
