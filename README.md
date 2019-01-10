@@ -1,6 +1,6 @@
 # ifdef-loader
 
-Webpack loader that allows JavaScript or TypeScript conditional compilation (`#if ... #else ... #endif`)
+Webpack loader that allows JavaScript or TypeScript conditional compilation (`#if ... #elif ... #else ... #endif`)
 directly from Webpack.
 
 Conditional compilation directives are written inside `///` triple slash comment so
@@ -21,27 +21,27 @@ console.log("Ho!");
 /// #endif
 ```
 
-If the expression is `true` the block of code between `#if` and `#endif` is included,
-otherwise is excluded by commenting it out.
+If the expression is `true` the block of code between `#if` and `#endif` is included, otherwise is excluded by commenting it out.
+
+Additionally, `#elif` and `#else` clauses can be added to an `#if` clause:
+```js
+/// #if env == 'PRODUCTION'
+console.log('Production!');
+/// #elif env == 'DEBUG'
+console.log('Debug!');
+/// #else
+console.log('Something else!');
+/// #endif
+```
 
 The `#if` clauses can also be nested:
 ```js
 /// #if PRODUCTION
       /// #if OS=="android"
       android_code();
-      /// #endif
-      /// #if OS=="ios"
+      /// #elif OS=="ios"
       ios_code();
       /// #endif
-/// #endif
-```
-
-Additionally, `#else` clauses can be defined for every `#if` clause:
-```js
-/// #if PRODUCTION
-console.log('Production!');
-/// #else
-console.log('Something else!');
 /// #endif
 ```
 
