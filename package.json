@@ -1,6 +1,6 @@
 {
   "name": "ifdef-loader",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "",
   "main": "ifdef-loader.js",
   "devDependencies": {
@@ -18,6 +18,10 @@
     {
       "name": "Erez Eshkol",
       "email": "erez@erez.pw"
+    },
+    {
+      "name": "Wisam Ghantous",
+      "url": "https://github.com/gwigwam"
     }
   ],
   "license": "MIT",

@@ -25,7 +25,7 @@ const defs = {
 
 describe("files spec", ()=> {
 
-   const files = [ "simple", "nested", "dfleury", "nested.else", "simple.doubleslash" ];
+   const files = [ "simple", "nested", "dfleury", "nested.else", "simple.doubleslash", "elif", "nested.elif" ];
 
    const fileSet = files.map(fn => ({
       input:    `spec/data/${fn}.in.js`,
