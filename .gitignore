@@ -3,4 +3,5 @@ node_modules/
 *.js
 !**/*.in.js
 !**/*.out.js
-!**/*webpack*.js
+!**/*webpack.in.js
+!**/*webpack.out.js
