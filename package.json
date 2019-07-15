@@ -1,6 +1,6 @@
 {
   "name": "ifdef-loader",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "",
   "main": "ifdef-loader.js",
   "devDependencies": {
