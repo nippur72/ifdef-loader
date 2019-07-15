@@ -39,6 +39,9 @@ export function parse(source: string, defs: object, verbose?: boolean, tripleSla
    if(tripleSlash === undefined) tripleSlash = true;
    useTripleSlash = tripleSlash;
 
+   // early skip check: do not process file when no '#if' are contained
+   if(source.indexOf('#if') === -1) return source;
+
    const lines = source.split('\n');
 
    var ifBlocks = find_if_blocks(lines);
