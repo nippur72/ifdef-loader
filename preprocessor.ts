@@ -1,3 +1,5 @@
+import { OptionObject } from 'loader-utils';
+
 /** Holds the line indexes for a complete #if block */
 class IfBlock {
    /**
@@ -35,7 +37,7 @@ enum IfType { If, Elif }
 
 let useTripleSlash: boolean|undefined;
 
-export function parse(source: string, defs: object, verbose?: boolean, tripleSlash?: boolean): string {
+export function parse(source: string, defs: OptionObject, verbose?: boolean, tripleSlash?: boolean): string {
    if(tripleSlash === undefined) tripleSlash = true;
    useTripleSlash = tripleSlash;
 
@@ -145,7 +147,7 @@ function match_else(line: string): boolean {
 }
 
 /** Includes and excludes relevant lines based on evaluation of the provided IfBlock */
-function apply_if(lines: string[], ifBlock: IfBlock, defs: object, verbose: boolean = false) {
+function apply_if(lines: string[], ifBlock: IfBlock, defs: OptionObject, verbose: boolean = false) {
    let includeRange: [number, number]|null = null;
 
    const ifCond = parse_if(lines[ifBlock.startIx]);
@@ -198,7 +200,7 @@ function apply_if(lines: string[], ifBlock: IfBlock, defs: object, verbose: bool
 /**
  * @return true if block has to be preserved
  */
-function evaluate(condition: string, defs: object): boolean {
+function evaluate(condition: string, defs: OptionObject): boolean {
    const code = `return (${condition}) ? true : false;`;
    const args = Object.keys(defs);
 
