@@ -9,7 +9,7 @@ function removeCR(f: string): string {
 }
 
 function read(fileName: string) {
-   return fs.readFileSync(fileName).toString();
+   return fs.readFileSync(fileName).toString().replace(/\r\n/g, "\n");
 }
 
 function write(fileName: string, data: string) {
@@ -37,7 +37,7 @@ describe("files spec", ()=> {
    // checks spec files as terminating in CRLF (windows)
    fileSet.forEach( ({ input, output, actual })=> {
       it(`works on ${input}`, ()=> {
-         const tripleSlash = input.indexOf(".doubleslash.")==-1; 
+         const tripleSlash = input.indexOf(".doubleslash.") == -1;
          const inFile = read(input);         
          const actualFile = parse(inFile, defs, false, tripleSlash);
          const expectedFile = read(output);
@@ -49,7 +49,7 @@ describe("files spec", ()=> {
    // checks spec files as terminating in LF only (unix)
    fileSet.forEach( ({ input, output, actualLF })=> {
       it(`works on ${input}`, ()=> {
-         const tripleSlash = input.indexOf(".doubleslash.")==-1; 
+         const tripleSlash = input.indexOf(".doubleslash.") == -1;
          const inFile = removeCR(read(input));
          const actualFile = parse(inFile, defs, false, tripleSlash);
          const expectedFile = removeCR(read(output));
@@ -66,15 +66,14 @@ describe("webpack bundle", ()=>{
    const fileSet = files.map(fn => ({
       input:    `spec/data/${fn}.in.js`,
       output:   `spec/data/${fn}.out.js`,
-      actual:   `spec/data/${fn}.out.actual.js`      
+      actual:   `spec/data/${fn}.out.actual.js`
    }));
 
    // checks spec files as terminating in CRLF (windows)
    fileSet.forEach( ({ input, output, actual })=> {
       it(`build correctly on ${input}`, ()=> {
-         const inFile = read(input);
          const actualFile = read(actual);
-         const expectedFile = read(output);         
+         const expectedFile = read(output);
          expect(actualFile).toEqual(expectedFile);
       });
    });
