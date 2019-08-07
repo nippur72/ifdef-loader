@@ -2,6 +2,7 @@
     "compileOnSave": true,
     "compilerOptions": {
         "target": "es5",
+        "lib": ["es5", "es6"],
         "forceConsistentCasingInFileNames": false,
         "noFallthroughCasesInSwitch": true,
         "module": "commonjs",
