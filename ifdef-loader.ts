@@ -4,7 +4,7 @@ import { parse } from './preprocessor';
 export = function(source: string, map) {
    this.cacheable && this.cacheable();
 
-   const options = loaderUtils.getOptions(this);
+   const options: loaderUtils.OptionObject = loaderUtils.getOptions(this);
    const originalData = options.json || options;
 
    const data = { ...originalData };
