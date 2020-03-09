@@ -18,7 +18,7 @@ export = function(source: string, map) {
 
    let filePath: string | undefined = undefined;
    if(verbose) {
-      filePath = path.relative(this.rootContext, this.resourcePath);
+      filePath = path.relative(this.rootContext || '', this.resourcePath);
    }
 
    const tripleSlashFlag = "ifdef-triple-slash";
