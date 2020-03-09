@@ -1,5 +1,6 @@
 import * as loaderUtils from 'loader-utils';
 import { parse } from './preprocessor';
+import * as path from 'path';
 
 export = function(source: string, map) {
    this.cacheable && this.cacheable();
@@ -15,6 +16,11 @@ export = function(source: string, map) {
       delete data[verboseFlag];
    }
 
+   let filePath: string | undefined = undefined;
+   if(verbose) {
+      filePath = path.relative(this.rootContext, this.resourcePath);
+   }
+
    const tripleSlashFlag = "ifdef-triple-slash";
    const tripleSlash = data[tripleSlashFlag];
    if(tripleSlash !== undefined) {
@@ -22,7 +28,7 @@ export = function(source: string, map) {
    }
 
    try {
-      source = parse(source, data, verbose, tripleSlash);
+      source = parse(source, data, verbose, tripleSlash, filePath);
       this.callback(null, source, map);
    } catch(err) {
       const errorMessage = `ifdef-loader error: ${err}`;

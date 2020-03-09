@@ -37,7 +37,7 @@ enum IfType { If, Elif }
 
 let useTripleSlash: boolean|undefined;
 
-export function parse(source: string, defs: OptionObject, verbose?: boolean, tripleSlash?: boolean): string {
+export function parse(source: string, defs: OptionObject, verbose?: boolean, tripleSlash?: boolean, filePath?: string): string {
    if(tripleSlash === undefined) tripleSlash = true;
    useTripleSlash = tripleSlash;
 
@@ -48,7 +48,7 @@ export function parse(source: string, defs: OptionObject, verbose?: boolean, tri
 
    var ifBlocks = find_if_blocks(lines);
    for(let ifBlock of ifBlocks) {
-      apply_if(lines, ifBlock, defs, verbose);
+      apply_if(lines, ifBlock, defs, verbose, filePath);
    }
 
    return lines.join('\n');
@@ -147,7 +147,7 @@ function match_else(line: string): boolean {
 }
 
 /** Includes and excludes relevant lines based on evaluation of the provided IfBlock */
-function apply_if(lines: string[], ifBlock: IfBlock, defs: OptionObject, verbose: boolean = false) {
+function apply_if(lines: string[], ifBlock: IfBlock, defs: OptionObject, verbose: boolean = false, filePath?: string) {
    let includeRange: [number, number]|null = null;
 
    const ifCond = parse_if(lines[ifBlock.startIx]);
@@ -155,7 +155,7 @@ function apply_if(lines: string[], ifBlock: IfBlock, defs: OptionObject, verbose
 
    const log = (condition: string, outcome: boolean) => {
       if(verbose) {
-         console.log(`#if block lines [${ifBlock.startIx + 1}-${ifBlock.endIx + 1}]: Condition '${condition}' is ${outcome ? 'TRUE' : 'FALSE'}. ${includeRange != null ? `Including lines [${includeRange[0] + 1}-${includeRange[1] + 1}].` : 'Excluding everything.'}`);
+         console.log(`#if block lines [${ifBlock.startIx + 1}-${ifBlock.endIx + 1}]: Condition '${condition}' is ${outcome ? 'TRUE' : 'FALSE'}. ${includeRange != null ? `Including lines [${includeRange[0] + 1}-${includeRange[1] + 1}].` : 'Excluding everything.'} ${filePath}`);
       }
    };
 
