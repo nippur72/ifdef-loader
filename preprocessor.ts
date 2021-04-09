@@ -52,7 +52,7 @@ export function parse(source: string, defs: OptionObject, verbose?: boolean, tri
 
    const lines = source.split('\n');
 
-   var ifBlocks = find_if_blocks(lines);
+   const ifBlocks = find_if_blocks(lines);
    for(let ifBlock of ifBlocks) {
       apply_if(lines, ifBlock, defs, verbose, filePath);
    }
