@@ -67,22 +67,43 @@ describe("files spec", ()=> {
    check_spec(false);   // checks all specs with fillWithBlanks = false
 });
 
+// the ".actual.js" files have to be built manually using webpack
+// running with the option "fill-with-blanks" true and false
+
 describe("webpack bundle", ()=>{
    const files = [ "webpack" ];
 
-   const fileSet = files.map(fn => ({
-      input:    `spec/data/${fn}.in.js`,
-      output:   `spec/data/${fn}.out.js`,
-      actual:   `spec/data/${fn}.out.actual.js`
-   }));
+   describe("with option 'fill-with-blanks' false", ()=> {
+      const fileSet = files.map(fn => ({
+         input:    `spec/data/${fn}.in.js`,
+         output:   `spec/data/${fn}.out.js`,
+         actual:   `spec/data/${fn}.out.actual.js`
+      }));
 
-   // checks spec files as terminating in CRLF (windows)
-   fileSet.forEach( ({ input, output, actual })=> {
-      it(`build correctly on ${input}`, ()=> {
-         const actualFile = read(actual);
-         const expectedFile = read(output);
-         expect(actualFile).toEqual(expectedFile);
+      // checks spec files as terminating in CRLF (windows)
+      fileSet.forEach( ({ input, output, actual })=> {
+         it(`build correctly on ${input}`, ()=> {
+            const actualFile = read(actual);
+            const expectedFile = read(output);
+            expect(actualFile).toEqual(expectedFile);
+         });
       });
    });
 
+   describe("with option 'fill-with-blanks' true", ()=> {
+      const fileSet = files.map(fn => ({
+         input:    `spec/data/${fn}.in.js`,
+         output:   `spec/data/${fn}.fwb.out.js`,
+         actual:   `spec/data/${fn}.fwb.out.actual.js`
+      }));
+
+      // checks spec files as terminating in CRLF (windows)
+      fileSet.forEach( ({ input, output, actual })=> {
+         it(`build correctly on ${input}`, ()=> {
+            const actualFile = read(actual);
+            const expectedFile = read(output);
+            expect(actualFile).toEqual(expectedFile);
+         });
+      });
+   });
 });

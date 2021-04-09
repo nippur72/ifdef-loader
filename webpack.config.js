@@ -8,8 +8,9 @@
 const opts = {
    DEBUG: true,
    version: 3,
-   "ifdef-verbose": true,        // add this for verbose output
-   "ifdef-triple-slash": true    // add this to use double slash comment instead of default triple slash
+   "ifdef-verbose": true,            // add this for verbose output
+   "ifdef-triple-slash": true,       // add this to use double slash comment instead of default triple slash
+   "ifdef-fill-with-blanks": true    // add this to remove code with blank spaces instead of "//" comments 
 };
 
 // if using query strings
@@ -43,7 +44,7 @@ module.exports = function(env)
        output: {
            libraryTarget: "this",
            path: `${__dirname}/spec/data`,
-           filename: "webpack.out.actual.js",
+           filename: opts["ifdef-fill-with-blanks"] ? "webpack.fwb.out.actual.js" : "webpack.out.actual.js",
        }       
    };
 
