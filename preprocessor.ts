@@ -1,6 +1,6 @@
 import { OptionObject } from 'loader-utils';
 
-interface IRange {
+interface Range {
    from: number;
    to: number;
 }
@@ -16,11 +16,11 @@ class IfBlock {
     */
    constructor(public startIx: number, public endIx: number, public elifIxs: number[] = [], public elseIx: number|null = null, public innerIfs: IfBlock[] = []) { }
 
-   getIfRange(): IRange {
+   getIfRange(): Range {
       const to = this.elifIxs.length > 0 ? this.elifIxs[0] : this.elseIx != null ? this.elseIx : this.endIx;
       return { from: this.startIx, to };
    }
-   getElifRange(index: number): IRange {
+   getElifRange(index: number): Range {
       if(this.elifIxs.length > index) {
          const from = this.elifIxs[index];
          const to = this.elifIxs.length > index + 1 ? this.elifIxs[index + 1] : this.elseIx != null ? this.elseIx : this.endIx;
@@ -29,7 +29,7 @@ class IfBlock {
          throw `Invalid elif index '${index}', there are only ${this.elifIxs.length} elifs`;
       }
    }
-   getElseRange(): IRange {
+   getElseRange(): Range {
       if(this.elseIx != null) {
          return { from: this.elseIx, to: this.endIx };
       } else {
@@ -154,7 +154,7 @@ function match_else(line: string): boolean {
 
 /** Includes and excludes relevant lines based on evaluation of the provided IfBlock */
 function apply_if(lines: string[], ifBlock: IfBlock, defs: OptionObject, verbose: boolean = false, filePath?: string) {
-   let includeRange: IRange|null = null;
+   let includeRange: Range|null = null;
 
    const ifCond = parse_if(lines[ifBlock.startIx]);
    const ifRes = evaluate(ifCond, defs);
