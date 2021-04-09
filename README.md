@@ -63,8 +63,9 @@ before going into TypeScript compiler:
 const opts = {
    DEBUG: true,
    version: 3,
-   "ifdef-verbose": true,       // add this for verbose output
-   "ifdef-triple-slash": false  // add this to use double slash comment instead of default triple slash
+   "ifdef-verbose": true,          // add this for verbose output
+   "ifdef-triple-slash": false,    // add this to use double slash comment instead of default triple slash
+   "ifdef-fill-with-blanks": true  // add this to remove code with blank spaces instead of "//" comments 
 };
 
 /* ... */ { 
@@ -104,6 +105,8 @@ MIT
 Contributions in the form of issues or pull requests are welcome.
 
 ## Changes
+
+- v2.2.0 added option `fill-with-blanks` for removing code with blank spaces instead of `//` comments
 
 - v2.1.0 added support for `#elif` clause.
 
