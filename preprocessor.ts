@@ -228,21 +228,17 @@ function blank_code(lines: string[], start: number, end: number) {
       const len = lines[t].length;
       const lastChar = lines[t].charAt(len-1);
       const windowsTermination = lastChar === '\r';
-      if(len === 0)
-      {
+      if(len === 0) {
          lines[t] = '';
       }
-      else if(len === 1)
-      {
+      else if(len === 1) {
          lines[t] = windowsTermination ? '\r' : ' ';
       }
-      else if(len === 2)
-      {
-         lines[t] = windowsTermination ? ' \r' : '//';
+      else if(len === 2) {
+         lines[t] = windowsTermination ? ' \r' : fillCharacter.repeat(2);
       }
-      else
-      {
-         lines[t] = windowsTermination ? ("/" as any).repeat(len-1)+'\r' : ("/" as any).repeat(len);
+      else {
+         lines[t] = windowsTermination ? fillCharacter.repeat(len-1)+'\r' : fillCharacter.repeat(len);
       }
    }
 }
