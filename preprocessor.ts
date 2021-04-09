@@ -1,5 +1,10 @@
 import { OptionObject } from 'loader-utils';
 
+interface IRange {
+   from: number;
+   to: number;
+}
+
 /** Holds the line indexes for a complete #if block */
 class IfBlock {
    /**
@@ -11,22 +16,22 @@ class IfBlock {
     */
    constructor(public startIx: number, public endIx: number, public elifIxs: number[] = [], public elseIx: number|null = null, public innerIfs: IfBlock[] = []) { }
 
-   getIfRange(): [number, number] {
+   getIfRange(): IRange {
       const to = this.elifIxs.length > 0 ? this.elifIxs[0] : this.elseIx != null ? this.elseIx : this.endIx;
-      return [this.startIx, to];
+      return { from: this.startIx, to };
    }
-   getElifRange(index: number): [number, number] {
+   getElifRange(index: number): IRange {
       if(this.elifIxs.length > index) {
          const from = this.elifIxs[index];
          const to = this.elifIxs.length > index + 1 ? this.elifIxs[index + 1] : this.elseIx != null ? this.elseIx : this.endIx;
-         return [from, to];
+         return { from, to };
       } else {
          throw `Invalid elif index '${index}', there are only ${this.elifIxs.length} elifs`;
       }
    }
-   getElseRange(): [number, number] {
+   getElseRange(): IRange {
       if(this.elseIx != null) {
-         return [this.elseIx, this.endIx];
+         return { from: this.elseIx, to: this.endIx };
       } else {
          throw 'Cannot use elseRange when elseIx is null';
       }
@@ -36,6 +41,7 @@ class IfBlock {
 enum IfType { If, Elif }
 
 let useTripleSlash: boolean|undefined;
+let fillCharacter: string;
 
 export function parse(source: string, defs: OptionObject, verbose?: boolean, tripleSlash?: boolean, filePath?: string): string {
    if(tripleSlash === undefined) tripleSlash = true;
@@ -148,7 +154,7 @@ function match_else(line: string): boolean {
 
 /** Includes and excludes relevant lines based on evaluation of the provided IfBlock */
 function apply_if(lines: string[], ifBlock: IfBlock, defs: OptionObject, verbose: boolean = false, filePath?: string) {
-   let includeRange: [number, number]|null = null;
+   let includeRange: IRange|null = null;
 
    const ifCond = parse_if(lines[ifBlock.startIx]);
    const ifRes = evaluate(ifCond, defs);
@@ -183,15 +189,15 @@ function apply_if(lines: string[], ifBlock: IfBlock, defs: OptionObject, verbose
    }
 
    if(includeRange != null) {
-      blank_code(lines, ifBlock.startIx, includeRange[0]);
-      blank_code(lines, includeRange[1], ifBlock.endIx);
+      blank_code(lines, ifBlock.startIx, includeRange.from);
+      blank_code(lines, includeRange.to, ifBlock.endIx);
    } else {
       blank_code(lines, ifBlock.startIx, ifBlock.endIx);
    }
 
    for(let innerIf of ifBlock.innerIfs) {
       // Apply inner-if blocks only when they are not already erased
-      if(includeRange != null && innerIf.startIx >= includeRange[0] && innerIf.startIx <= includeRange[1]) {
+      if(includeRange != null && innerIf.startIx >= includeRange.from && innerIf.startIx <= includeRange.to) {
          apply_if(lines, innerIf, defs, verbose);
       }
    }
