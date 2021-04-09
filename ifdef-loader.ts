@@ -27,8 +27,14 @@ export = function(source: string, map) {
       delete data[tripleSlashFlag];
    }
 
+   const fillWithBlanksFlag = "ifdef-fill-with-blanks";
+   const fillWithBlanks = data[fillWithBlanksFlag];
+   if(fillWithBlanks !== undefined) {
+      delete data[fillWithBlanksFlag];
+   }
+
    try {
-      source = parse(source, data, verbose, tripleSlash, filePath);
+      source = parse(source, data, verbose, tripleSlash, filePath, fillWithBlanks);
       this.callback(null, source, map);
    } catch(err) {
       const errorMessage = `ifdef-loader error: ${err}`;

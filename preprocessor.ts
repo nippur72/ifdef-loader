@@ -8,30 +8,30 @@ interface Range {
 /** Holds the line indexes for a complete #if block */
 class IfBlock {
    /**
-    * @param startIx Line index of #if
-    * @param endIx Line index of #endif
-    * @param elifIxs Line indexes of #elifs
-    * @param elseIx Line index of #else, or null
-    * @param innerIfs List of any IfBlocks that are contained within this IfBlock
+    * @param line_if Line index of #if
+    * @param line_endif Line index of #endif
+    * @param elifs Line indexes of #elifs
+    * @param line_else Line index of #else, or null
+    * @param inner_ifs List of any IfBlocks that are contained within this IfBlock
     */
-   constructor(public startIx: number, public endIx: number, public elifIxs: number[] = [], public elseIx: number|null = null, public innerIfs: IfBlock[] = []) { }
+   constructor(public line_if: number, public line_endif: number, public elifs: number[] = [], public line_else: number|null = null, public inner_ifs: IfBlock[] = []) { }
 
    getIfRange(): Range {
-      const to = this.elifIxs.length > 0 ? this.elifIxs[0] : this.elseIx != null ? this.elseIx : this.endIx;
-      return { from: this.startIx, to };
+      const to = this.elifs.length > 0 ? this.elifs[0] : this.line_else != null ? this.line_else : this.line_endif;
+      return { from: this.line_if, to };
    }
    getElifRange(index: number): Range {
-      if(this.elifIxs.length > index) {
-         const from = this.elifIxs[index];
-         const to = this.elifIxs.length > index + 1 ? this.elifIxs[index + 1] : this.elseIx != null ? this.elseIx : this.endIx;
+      if(this.elifs.length > index) {
+         const from = this.elifs[index];
+         const to = this.elifs.length > index + 1 ? this.elifs[index + 1] : this.line_else != null ? this.line_else : this.line_endif;
          return { from, to };
       } else {
-         throw `Invalid elif index '${index}', there are only ${this.elifIxs.length} elifs`;
+         throw `Invalid elif index '${index}', there are only ${this.elifs.length} elifs`;
       }
    }
    getElseRange(): Range {
-      if(this.elseIx != null) {
-         return { from: this.elseIx, to: this.endIx };
+      if(this.line_else != null) {
+         return { from: this.line_else, to: this.line_endif };
       } else {
          throw 'Cannot use elseRange when elseIx is null';
       }
@@ -43,9 +43,12 @@ enum IfType { If, Elif }
 let useTripleSlash: boolean|undefined;
 let fillCharacter: string;
 
-export function parse(source: string, defs: OptionObject, verbose?: boolean, tripleSlash?: boolean, filePath?: string): string {
+export function parse(source: string, defs: OptionObject, verbose?: boolean, tripleSlash?: boolean, filePath?: string, fillWithBlanks?: boolean): string {
    if(tripleSlash === undefined) tripleSlash = true;
    useTripleSlash = tripleSlash;
+
+   if(fillWithBlanks === undefined) fillWithBlanks = false;
+   fillCharacter = fillWithBlanks ? ' ' : '/';
 
    // early skip check: do not process file when no '#if' are contained
    if(source.indexOf('#if') === -1) return source;
@@ -66,7 +69,7 @@ function find_if_blocks(lines: string[]): IfBlock[] {
       if(match_if(lines[i])) {
          const ifBlock = parse_if_block(lines, i);
          blocks.push(ifBlock);
-         i = ifBlock.endIx;
+         i = ifBlock.line_endif;
       }
    }
    return blocks;
@@ -89,7 +92,7 @@ function parse_if_block(lines: string[], ifBlockStart: number): IfBlock {
       if(innerIfMatch) {
          const innerIf = parse_if_block(lines, i);
          innerIfs.push(innerIf);
-         i = innerIf.endIx;
+         i = innerIf.line_endif;
          continue;
       }
 
@@ -156,48 +159,56 @@ function match_else(line: string): boolean {
 function apply_if(lines: string[], ifBlock: IfBlock, defs: OptionObject, verbose: boolean = false, filePath?: string) {
    let includeRange: Range|null = null;
 
-   const ifCond = parse_if(lines[ifBlock.startIx]);
+   // gets the condition and parses it
+   const ifCond = parse_if(lines[ifBlock.line_if]);
    const ifRes = evaluate(ifCond, defs);
 
    const log = (condition: string, outcome: boolean) => {
       if(verbose) {
-         console.log(`#if block lines [${ifBlock.startIx + 1}-${ifBlock.endIx + 1}]: Condition '${condition}' is ${outcome ? 'TRUE' : 'FALSE'}. ${includeRange != null ? `Including lines [${includeRange[0] + 1}-${includeRange[1] + 1}]` : 'Excluding everything'} (${filePath})`);
+         console.log(`#if block lines [${ifBlock.line_if + 1}-${ifBlock.line_endif + 1}]: Condition '${condition}' is ${outcome ? 'TRUE' : 'FALSE'}. ${includeRange != null ? `Including lines [${includeRange[0] + 1}-${includeRange[1] + 1}]` : 'Excluding everything'} (${filePath})`);
       }
    };
 
+   // finds which part of the #if has to be included, all else is excluded
+
    if(ifRes) {
+      // include the #if body
       includeRange = ifBlock.getIfRange();
       log(ifCond, true);
    } else {
-      for(let elifIx = 0; elifIx < ifBlock.elifIxs.length; elifIx++) {
-         const elifLine = lines[ifBlock.elifIxs[elifIx]];
+      // if there are #elif checks if one has to be included
+      for(let elifIx = 0; elifIx < ifBlock.elifs.length; elifIx++) {
+         const elifLine = lines[ifBlock.elifs[elifIx]];
          const elifCond = parse_if(elifLine);
          const elifRes = evaluate(elifCond, defs);
          if(elifRes) {
+            // include #elif
             includeRange = ifBlock.getElifRange(elifIx);
             log(elifCond, true);
             break;
          }
       }
 
+      // if no #elif are found then goes to #else branch
       if(includeRange == null) {
-         if(ifBlock.elseIx != null) {
+         if(ifBlock.line_else != null) {
             includeRange = ifBlock.getElseRange();
          }
          log(ifCond, false);
       }
    }
 
-   if(includeRange != null) {
-      blank_code(lines, ifBlock.startIx, includeRange.from);
-      blank_code(lines, includeRange.to, ifBlock.endIx);
+   // blanks everything except the part that has to be included
+   if(includeRange != null) {      
+      blank_code(lines, ifBlock.line_if, includeRange.from);   // blanks: #if ... "from"
+      blank_code(lines, includeRange.to, ifBlock.line_endif);  // blanks: "to" ... #endif
    } else {
-      blank_code(lines, ifBlock.startIx, ifBlock.endIx);
+      blank_code(lines, ifBlock.line_if, ifBlock.line_endif);  // blanks: #if ... #endif
    }
 
-   for(let innerIf of ifBlock.innerIfs) {
-      // Apply inner-if blocks only when they are not already erased
-      if(includeRange != null && innerIf.startIx >= includeRange.from && innerIf.startIx <= includeRange.to) {
+   // apply to inner #if blocks that have not already been erased
+   for(let innerIf of ifBlock.inner_ifs) {      
+      if(includeRange != null && innerIf.line_if >= includeRange.from && innerIf.line_if <= includeRange.to) {
          apply_if(lines, innerIf, defs, verbose);
       }
    }
