@@ -12,6 +12,7 @@
     "webpack": "^3.5.5"
   },
   "scripts": {
+    "build": "tsc",
     "test": "node node_modules/webpack/bin/webpack.js & tsc & jasmine --no-color"
   },
   "author": "Antonino Porcino <nino.porcino@gmail.com>",
