@@ -223,7 +223,7 @@ function evaluate(condition: string, defs: OptionObject): boolean {
    return result;
 }
 
-function blank_code(lines: string[], start: number, end: number = start) {
+function blank_code(lines: string[], start: number, end: number) {
    for(let t=start; t<=end; t++) {
       const len = lines[t].length;
       const lastChar = lines[t].charAt(len-1);
