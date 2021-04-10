@@ -165,7 +165,7 @@ function apply_if(lines: string[], ifBlock: IfBlock, defs: OptionObject, verbose
 
    const log = (condition: string, outcome: boolean) => {
       if(verbose) {
-         console.log(`#if block lines [${ifBlock.line_if + 1}-${ifBlock.line_endif + 1}]: Condition '${condition}' is ${outcome ? 'TRUE' : 'FALSE'}. ${includeRange != null ? `Including lines [${includeRange[0] + 1}-${includeRange[1] + 1}]` : 'Excluding everything'} (${filePath})`);
+         console.log(`#if block lines [${ifBlock.line_if + 1}-${ifBlock.line_endif + 1}]: Condition '${condition}' is ${outcome ? 'TRUE' : 'FALSE'}. ${includeRange != null ? `Including lines [${includeRange.from + 1}-${includeRange.to + 1}]` : 'Excluding everything'} (${filePath})`);
       }
    };
 
