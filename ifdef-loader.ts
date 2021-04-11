@@ -33,8 +33,14 @@ export = function(source: string, map) {
       delete data[fillWithBlanksFlag];
    }
 
+   const uncommentPrefixFlag = "ifdef-uncomment-prefix";
+   const uncommentPrefix = data[uncommentPrefixFlag];
+   if(uncommentPrefix !== undefined) {
+      delete data[uncommentPrefixFlag];
+   }
+
    try {
-      source = parse(source, data, verbose, tripleSlash, filePath, fillWithBlanks);
+      source = parse(source, data, verbose, tripleSlash, filePath, fillWithBlanks, uncommentPrefix);
       this.callback(null, source, map);
    } catch(err) {
       const errorMessage = `ifdef-loader error: ${err}`;
