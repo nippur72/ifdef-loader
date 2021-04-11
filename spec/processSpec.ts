@@ -38,12 +38,13 @@ describe("files spec", ()=> {
    }));
 
    function check_spec(fillWithBlanks) {
+      const uncommentPrefix = "/// #code ";
       // checks spec files as terminating in CRLF (windows)
       fileSet.forEach( ({ input, output, output_fwb, actual, actual_fwb })=> {
          it(`works on ${input}`, ()=> {
             const tripleSlash = input.indexOf(".doubleslash.") == -1;
             const inFile = read(input);         
-            const actualFile = parse(inFile, defs, false, tripleSlash, undefined, fillWithBlanks);
+            const actualFile = parse(inFile, defs, false, tripleSlash, undefined, fillWithBlanks, uncommentPrefix);
             const expectedFile = read(fillWithBlanks ? output_fwb : output);            
             write(fillWithBlanks ? actual_fwb : actual, actualFile);
             expect(actualFile).toEqual(expectedFile);
@@ -55,7 +56,7 @@ describe("files spec", ()=> {
          it(`works on ${input}`, ()=> {
             const tripleSlash = input.indexOf(".doubleslash.") == -1;
             const inFile = removeCR(read(input));
-            const actualFile = parse(inFile, defs, false, tripleSlash, undefined, fillWithBlanks);
+            const actualFile = parse(inFile, defs, false, tripleSlash, undefined, fillWithBlanks, uncommentPrefix);
             const expectedFile = removeCR(read(fillWithBlanks ? output_fwb : output));            
             write(fillWithBlanks ? actualLF_fwb : actualLF, actualFile);
             expect(actualFile).toEqual(expectedFile);
