@@ -63,9 +63,10 @@ before going into TypeScript compiler:
 const opts = {
    DEBUG: true,
    version: 3,
-   "ifdef-verbose": true,          // add this for verbose output
-   "ifdef-triple-slash": false,    // add this to use double slash comment instead of default triple slash
-   "ifdef-fill-with-blanks": true  // add this to remove code with blank spaces instead of "//" comments 
+   "ifdef-verbose": true,                 // add this for verbose output
+   "ifdef-triple-slash": false,           // add this to use double slash comment instead of default triple slash
+   "ifdef-fill-with-blanks": true         // add this to remove code with blank spaces instead of "//" comments
+   "ifdef-uncomment-prefix": "// #code "  // add this to uncomment code starting with "// #code "
 };
 
 /* ... */ { 
@@ -96,6 +97,45 @@ in `example.ts`:
 /// #endif
 ```
 
+## Code in comments
+
+Often times writing `#if` ... `#else` ... `#endif` results in code that is not syntactically valid
+or does not pass the LINT check. A possible workaround is to hide such code in comments
+and let `ifdef-loader` uncomment it if it's part of the block that has to be included in the output.
+
+Example:
+
+The following code is invalid because the linter sees a double declaration of the `a` variable.
+```
+// #if DEBUG
+let a=1;
+// #else
+let a=2;
+// #endif
+```
+
+Using code in comments:
+```
+// #if DEBUG
+let a=1;
+// #else
+// #code let a=2;
+// #endif
+```
+The code is now under comment so it's ignored by the linter; but it's uncommented
+by `ifdef-loader` if the else branch has to be included in the output (that is when `DEBUG==false`).
+
+The `// #code ` string prefix can be changed and has to be explictly specified
+in the options object:
+
+```
+const opts = {
+   // ...
+   "ifdef-uncomment-prefix": "// #code ",
+   // ...
+};
+```
+
 ## License
 
 MIT
@@ -105,6 +145,8 @@ MIT
 Contributions in the form of issues or pull requests are welcome.
 
 ## Changes
+
+- v2.3.0 added option `uncomment-prefix` to write code in comments allowing it to pass through linters and syntax checking
 
 - v2.2.0 added option `fill-with-blanks` for removing code with blank spaces instead of `//` comments
 

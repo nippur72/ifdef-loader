@@ -42,13 +42,16 @@ enum IfType { If, Elif }
 
 let useTripleSlash: boolean|undefined;
 let fillCharacter: string;
+let uncommentPrefix: string | undefined;
 
-export function parse(source: string, defs: OptionObject, verbose?: boolean, tripleSlash?: boolean, filePath?: string, fillWithBlanks?: boolean): string {
+export function parse(source: string, defs: OptionObject, verbose?: boolean, tripleSlash?: boolean, filePath?: string, fillWithBlanks?: boolean, uncommentPrefixString?: string): string {
    if(tripleSlash === undefined) tripleSlash = true;
    useTripleSlash = tripleSlash;
 
    if(fillWithBlanks === undefined) fillWithBlanks = false;
    fillCharacter = fillWithBlanks ? ' ' : '/';
+
+   uncommentPrefix = uncommentPrefixString;
 
    // early skip check: do not process file when no '#if' are contained
    if(source.indexOf('#if') === -1) return source;
@@ -202,6 +205,7 @@ function apply_if(lines: string[], ifBlock: IfBlock, defs: OptionObject, verbose
    if(includeRange != null) {      
       blank_code(lines, ifBlock.line_if, includeRange.from);   // blanks: #if ... "from"
       blank_code(lines, includeRange.to, ifBlock.line_endif);  // blanks: "to" ... #endif
+      reveal_code(lines, includeRange.from, includeRange.to);  // reveal: "from" ... "to"
    } else {
       blank_code(lines, ifBlock.line_if, ifBlock.line_endif);  // blanks: #if ... #endif
    }
@@ -250,6 +254,22 @@ function blank_code(lines: string[], start: number, end: number) {
       }
       else {
          lines[t] = windowsTermination ? fillCharacter.repeat(len-1)+'\r' : fillCharacter.repeat(len);
+      }
+   }
+}
+
+function reveal_code(lines: string[], start: number, end: number) {
+   // early exit if no prefix is specifed
+   if(uncommentPrefix == undefined) return;
+
+   // create a regex capturing the line
+   let regex = new RegExp(`^(?<before>\s*${uncommentPrefix})(?<line>.*)$`);
+
+   // replace lines that match the uncomment prefix
+   for(let t=start; t<=end; t++) {
+      let r = regex.exec(lines[t]);
+      if(r!==null && r.groups!==undefined) {
+         lines[t] = " ".repeat(r.groups.before.length) + r.groups.line;
       }
    }
 }

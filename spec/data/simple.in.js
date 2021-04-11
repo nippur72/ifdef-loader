@@ -15,3 +15,9 @@ debug("hello");
 /// #else
 debug("or not");
 /// #endif
+
+/// #if false
+let z=1;
+/// #else
+/// #code let z=2;
+/// #endif
