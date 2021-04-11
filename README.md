@@ -97,6 +97,45 @@ in `example.ts`:
 /// #endif
 ```
 
+## Code in comments
+
+Often times writing `#if` ... `#else` ... `#endif` results in code that is not syntactically valid
+or does not pass the LINT check. A possible workaround is to hide such code in comments
+and let `ifdef-loader` uncomment it if it's part of the block that has to be included in the output.
+
+Example:
+
+The following code is invalid because the linter sees a double declaration of the `a` variable.
+```
+// #if DEBUG
+let a=1;
+// #else
+let a=2;
+// #endif
+```
+
+Using code in comments:
+```
+// #if DEBUG
+let a=1;
+// #else
+// #code let a=2;
+// #endif
+```
+The code is now under comment so it's ignored by the linter; but it's uncommented
+by `ifdef-loader` if the else branch has to be included in the output (that is when `DEBUG==false`).
+
+The `// #code ` string prefix can be changed and has to be explictly specified
+in the options object:
+
+```
+const opts = {
+   // ...
+   "ifdef-uncomment-prefix": "// #code ",
+   // ...
+};
+```
+
 ## License
 
 MIT
