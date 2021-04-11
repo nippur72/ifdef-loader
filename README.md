@@ -63,9 +63,10 @@ before going into TypeScript compiler:
 const opts = {
    DEBUG: true,
    version: 3,
-   "ifdef-verbose": true,          // add this for verbose output
-   "ifdef-triple-slash": false,    // add this to use double slash comment instead of default triple slash
-   "ifdef-fill-with-blanks": true  // add this to remove code with blank spaces instead of "//" comments 
+   "ifdef-verbose": true,                 // add this for verbose output
+   "ifdef-triple-slash": false,           // add this to use double slash comment instead of default triple slash
+   "ifdef-fill-with-blanks": true         // add this to remove code with blank spaces instead of "//" comments
+   "ifdef-uncomment-prefix": "// #code "  // add this to uncomment code starting with "// #code "
 };
 
 /* ... */ { 
@@ -105,6 +106,8 @@ MIT
 Contributions in the form of issues or pull requests are welcome.
 
 ## Changes
+
+- v2.3.0 added option `uncomment-prefix` to write code in comments allowing it to pass through linters and syntax checking
 
 - v2.2.0 added option `fill-with-blanks` for removing code with blank spaces instead of `//` comments
 
