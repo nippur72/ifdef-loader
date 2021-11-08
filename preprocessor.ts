@@ -56,7 +56,7 @@ export function parse(source: string, defs: OptionObject, verbose?: boolean, tri
    // early skip check: do not process file when no '#if' are contained
    if(source.indexOf('#if') === -1) return source;
 
-   const lines = source.split('\n');
+   const lines = source.split(/\r\n|\n|\r/);
 
    const ifBlocks = find_if_blocks(lines);
    for(let ifBlock of ifBlocks) {
