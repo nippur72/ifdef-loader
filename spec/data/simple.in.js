@@ -19,5 +19,5 @@ debug("or not");
 /// #if false
 let z=1;
 /// #else
-/// #code let z=2;
+ /// #code let z=2;
 /// #endif

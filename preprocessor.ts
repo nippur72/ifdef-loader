@@ -263,7 +263,7 @@ function reveal_code(lines: string[], start: number, end: number) {
    if(uncommentPrefix == undefined) return;
 
    // create a regex capturing the line
-   let regex = new RegExp(`^(?<before>\s*${uncommentPrefix})(?<line>.*)$`);
+   let regex = new RegExp(`^(?<before>\\s*${uncommentPrefix})(?<line>.*)$`);
 
    // replace lines that match the uncomment prefix
    for(let t=start; t<=end; t++) {
