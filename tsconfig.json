@@ -13,7 +13,7 @@
       "preserveConstEnums": true,
       "experimentalDecorators": true,
       "declaration": false,
-      "types": ["node", "webpack-env"],
+      "types": ["node"],
       "skipLibCheck": true
     },
     "exclude": ["node_modules"]
