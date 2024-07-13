@@ -1,23 +1,20 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
-        "target": "es5",
-        "lib": ["es5", "es6", "es2018"],
-        "forceConsistentCasingInFileNames": false,
-        "noFallthroughCasesInSwitch": true,
-        "module": "commonjs",
-        "noImplicitAny": false,
-        "noImplicitReturns": true,
-        "strictNullChecks": true,
-        "removeComments": true,
-        "preserveConstEnums": true,
-        "experimentalDecorators": true,
-        "declaration": false,
-        "types": [
-           "node"
-        ]
+      "target": "es5",
+      "lib": ["es5", "es6", "es2018"],
+      "forceConsistentCasingInFileNames": false,
+      "noFallthroughCasesInSwitch": true,
+      "module": "commonjs",
+      "noImplicitAny": false,
+      "noImplicitReturns": true,
+      "strictNullChecks": true,
+      "removeComments": true,
+      "preserveConstEnums": true,
+      "experimentalDecorators": true,
+      "declaration": false,
+      "types": ["node", "webpack-env"],
+      "skipLibCheck": true
     },
-    "exclude": [
-        "node_modules"
-    ]
+    "exclude": ["node_modules"]
 }

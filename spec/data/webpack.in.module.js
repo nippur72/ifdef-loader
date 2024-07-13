@@ -13,4 +13,3 @@ assert(DEBUG === undefined || DEBUG == false)
 /// #if version > 2
 assert(version > 2)
 /// #endif
-

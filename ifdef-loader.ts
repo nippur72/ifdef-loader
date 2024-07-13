@@ -5,10 +5,17 @@ import * as path from 'path';
 export = function(source: string, map) {
    this.cacheable && this.cacheable();
 
-   const options: loaderUtils.OptionObject = loaderUtils.getOptions(this) || {};
+   const options: loaderUtils.OptionObject = this.getOptions() || {};
    const originalData = options.json || options;
 
-   const data = { ...originalData };
+   let data = {};
+   if (typeof originalData === 'object' && originalData !== null) {
+      data = { ...originalData };
+   } else if (typeof originalData === 'string') {
+         data = { originalData };
+   } else if (originalData === true) {
+      data = { originalData: true };
+   }
 
    const verboseFlag = "ifdef-verbose";
    const verbose = data[verboseFlag];

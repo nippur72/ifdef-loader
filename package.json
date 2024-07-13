@@ -1,19 +1,22 @@
 {
-  "name": "ifdef-loader",
+  "name": "ifdef-loader-webpack5",
   "version": "2.3.2",
   "description": "",
   "main": "ifdef-loader.js",
   "devDependencies": {
-    "@types/jasmine": "^2.5.43",
-    "@types/loader-utils": "^1.1.3",
-    "@types/node": "^7.10.14",
-    "jasmine": "^2.5.3",
-    "typescript": "^4.2.4",
-    "webpack": "^3.5.5"
+    "@types/jasmine": "^5.1.4",
+    "@types/loader-utils": "^2.0.6",
+    "@types/node": "^20.14.10",
+    "@types/webpack": "^5.28.5",
+    "@types/webpack-env": "^1.18.5",
+    "jasmine": "^5.1.0",
+    "typescript": "^5.5.3",
+    "webpack": "^5.93.0",
+    "webpack-cli": "^5.1.4"
   },
   "scripts": {
     "build": "tsc",
-    "test": "node node_modules/webpack/bin/webpack.js & tsc & jasmine --no-color"
+    "test": "node node_modules/webpack/bin/webpack.js --mode none && npx tsc && jasmine --no-color"
   },
   "author": "Antonino Porcino <nino.porcino@gmail.com>",
   "contributors": [
@@ -36,6 +39,6 @@
   },
   "homepage": "https://github.com/nippur72/ifdef-loader#readme",
   "dependencies": {
-    "loader-utils": "^1.1.0"
+    "loader-utils": "^3.3.1"
   }
 }
