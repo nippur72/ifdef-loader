@@ -15,7 +15,6 @@
     "webpack-cli": "^5.1.4"
   },
   "scripts": {
-    "prepare": "npm run build",
     "build": "tsc",
     "test": "node node_modules/webpack/bin/webpack.js --mode none && npx tsc && jasmine --no-color"
   },
