@@ -3,8 +3,7 @@
 Webpack loader that allows JavaScript or TypeScript conditional compilation (`#if ... #elif ... #else ... #endif`)
 directly from Webpack.
 
-Conditional compilation directives are written inside `///` triple slash comment so
-that they don't effect normal JavaScript or TypeScript parsing.
+Conditional compilation directives are written inside triple-slash (`///`) comments so that they don't affect normal JavaScript or TypeScript parsing.
 
 Example:
 ```js
